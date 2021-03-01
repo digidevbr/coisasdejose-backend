@@ -6,5 +6,5 @@
 
     <property name="now" value="now()" dbms="h2, mysql"/>
 
-    <include file="db/changelog/20210216210000_add_entity_Categoria.xml" relativeToChangelogFile="false" />
+    <include file="db/changelog/20210216210000_add_entity_Category.xml" relativeToChangelogFile="false" />
 </databaseChangeLog>
