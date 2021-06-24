@@ -1,7 +1,8 @@
 package br.com.coisasdejose.coisasdejosebackend.service;
 
-import br.com.coisasdejose.coisasdejosebackend.domain.Category;
 import br.com.coisasdejose.coisasdejosebackend.repository.CategoryRepository;
+import br.com.coisasdejose.coisasdejosebackend.service.dto.CategoryDTO;
+import br.com.coisasdejose.coisasdejosebackend.service.mapper.CategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,21 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public  CategoryService(CategoryRepository categoryRepository) {
+    private final CategoryMapper categoryMapper;
+
+    public  CategoryService(CategoryRepository categoryRepository,
+                            CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
     }
 
     @Transactional(readOnly = true)
-    public List<Category> findAll(){
+    public List<CategoryDTO> findAll(){
         log.debug("Find all category ok.");
-        return categoryRepository.findAll();
+        List<CategoryDTO> categoryDTOList = categoryMapper.toDTO(categoryRepository.findAll());
+        categoryDTOList.forEach(categoryDTO -> {
+            categoryDTO.setRecipesCount(1);
+        });
+        return categoryDTOList;
     }
 }
